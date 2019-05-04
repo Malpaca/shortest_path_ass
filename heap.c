@@ -78,6 +78,11 @@ int popmin(MinHeap * h){
   return min.name;
 }
 
+void free_heap(MinHeap *h){
+    free(h->arr);
+    free(h);
+}
+
 void print_heap(MinHeap *h){
     int i;
     printf("____________Print Heap_____________\n");

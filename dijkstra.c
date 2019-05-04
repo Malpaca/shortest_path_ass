@@ -66,6 +66,7 @@ void dijkstra (Graph *g, int a, int b, int total) {
             }
         }
     }
+    free_heap(h);
     printf("Distance:%d\n",g->vertices[b]->dist);
     free_all(g, total);
 }
