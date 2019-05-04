@@ -1,7 +1,9 @@
 #include "dijkstra.h"
 
 int name_map(char* name){
-    return (name[0]-'A')*26*26 + (name[1]-'A')*26 + (name[2]-'A');
+    int a = (name[0]-'A')*26*26 + (name[1]-'A')*26 + (name[2]-'A');
+    // printf("%d\n",a);
+    return a;
 }
 
 int extract_vertex(char * filename, int * arr){
@@ -46,12 +48,23 @@ void distance(char * filename, int total, char a[4], char b[4], int * names){
     //read from file and add edge to the structure
     int dist; char depart[4], arrival[4];
     while(fscanf(fp, "%s %s %d", depart, arrival, &dist) != EOF) {
-        // printf("%s->%s:%d\n", depart, arrival, dist);
-        add_edge(g, names[name_map(arrival)], names[name_map(depart)], dist);
+        printf("%d: %s:%d, %s:%d, %d\n", total, depart, names[name_map(depart)], arrival, names[name_map(arrival)],dist);
         add_edge(g, names[name_map(depart)], names[name_map(arrival)], dist);
+        // printf("%d,%d,%d,%d\n",
+        //                     g->vertices[names[name_map(depart)]]->e_len,
+        //                     g->vertices[names[name_map(depart)]]->e_size,
+        //                     g->vertices[names[name_map(depart)]]->dist,
+        //                     g->vertices[names[name_map(depart)]]->visited);
+        add_edge(g, names[name_map(arrival)], names[name_map(depart)], dist);
+        // if (!strcmp(depart, "CLT") && dist == 613) break;
+        // printf("%d,%d,%d,%d\n", g->vertices[names[name_map(arrival)]]->e_len,
+        //                     g->vertices[names[name_map(arrival)]]->e_size,
+        //                     g->vertices[names[name_map(arrival)]]->dist,
+        //                     g->vertices[names[name_map(arrival)]]->visited);
     }
     fclose(fp);
     //run dijkstra
+    printf("dijkstra function");
     dijkstra(g, start, end, total);
     // print_path(g, end);
 }

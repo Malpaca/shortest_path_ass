@@ -2,19 +2,26 @@
 
 void add_vertex (Graph *g, int i) {
     if (!g->vertices[i]) {
+        // printf("%d\n",i);
         g->vertices[i] = calloc(1, sizeof (Vertex));
+        g->vertices[i]->e_len = 0;
+        g->vertices[i]->e_size = 0;
+        g->vertices[i]->dist = INT_MAX;
+        g->vertices[i]->visited = 0;
     }
 }
 
 void add_edge (Graph *g, int a, int b, int w) {
     add_vertex(g, a);
+    // printf("%d:v1\n",a);
     add_vertex(g, b);
+    // printf("%d:v2\n",b);
     Vertex *v = g->vertices[a];
     if (v->e_len >= v->e_size) {
         v->e_size = v->e_size ? v->e_size * 2 : 4;
         v->edges = realloc(v->edges, v->e_size * sizeof (Edge *));
     }
-    Edge *e = calloc(1, sizeof (Edge));
+    Edge *e = malloc(sizeof (Edge));
     e->vertex = b;
     e->weight = w;
     v->edges[v->e_len++] = e;
@@ -44,6 +51,10 @@ void dijkstra (Graph *g, int a, int b, int total) {
     int i, j;
     for (i = 0; i < total; i++) {
         Vertex *v = g->vertices[i];
+        if (!g->vertices){
+            printf("%d\n",i);
+            continue;
+        }
         v->dist = INT_MAX;
         v->visited = 0;
     }
