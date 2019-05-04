@@ -9,8 +9,8 @@ dijkstra.o: dijkstra.h dijkstra.c
 heap.o: heap.c heap.h
 	$(CC) $(CFLAGS) -c heap.c
 
-fta.o: fta.c heap.h
-	$(CC) $(CFLAGS) -c fta.c
+fta.o: FTA.c heap.h
+	$(CC) $(CFLAGS) -c FTA.c
 
 fta: fta.o heap.o dijkstra.o
 	$(CC) $(CFLAGS) -o fta fta.o heap.o dijkstra.o
