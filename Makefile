@@ -13,7 +13,7 @@ fta.o: fta.c heap.h
 	$(CC) $(CFLAGS) -c fta.c
 
 fta: fta.o heap.o dijkstra.o
-	$(CC) $(CFLAGS) -o fta fta.o heap.o dijkstra.o
+	$(CC) $(CFLAGS) -o fta -g fta.o heap.o dijkstra.o
 
 clean:
 	rm *.o fta
