@@ -33,7 +33,7 @@ Graph * generate_graph(int total){
   return g;
 }
 
-void free_all(Graph * g, int total){
+void free_all(Graph * g, int total, MinHeap * h){
     free_heap(h);
     for (int i = 0; i < total; i++){
         if (g->vertices[i]) {
@@ -79,5 +79,5 @@ void dijkstra (Graph *g, int a, int b, int total) {
         }
     }
     printf("Distance:%d\n",g->vertices[b]->dist);
-    free_all(g, total);
+    free_all(g, total, h);
 }
