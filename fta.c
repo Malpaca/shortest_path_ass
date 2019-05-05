@@ -133,5 +133,6 @@ int main(int argc, char ** argv){
         }
         printf("Enter Command > ");
     }
+    free(indices, total);
     return 0;
 }
