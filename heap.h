@@ -13,6 +13,7 @@ typedef struct HNode{
 
 typedef struct MinHeap{
   HNode *arr;
+  int *index;
   int count;
 }MinHeap;
 

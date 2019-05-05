@@ -6,6 +6,24 @@ int name_map(char* name){
     return a;
 }
 
+char** map_index(char * filename, int total){
+    char ** indices = calloc(total, sizeof(char*));
+    FILE * fp;
+    fp = fopen(filename, "r");
+    if(fp == NULL) printf("Error opening file %s\n",filename);
+    char buf[50];
+    int count = 0;
+    while(fgets(buf, 50, fp) != NULL) {
+        char * name = calloc(4, sizeof(char));
+        strncpy(name, buf, 3);
+        name[3] = '\0';
+        indices[count] = name;
+        count++;
+    }
+    fclose(fp);
+    return indices;
+}
+
 int extract_vertex(char * filename, int * arr){
     FILE * fp;
     fp = fopen(filename, "r");
@@ -35,7 +53,7 @@ void airport(char * filename){
     fclose(fp);
 }
 
-void distance(char * filename, int total, char a[4], char b[4], int * names){
+void distance(char * filename, int total, char a[4], char b[4], int * names, char ** indices){
     //start and end string mapping recorded
     int start = names[name_map(a)];
     int end = names[name_map(b)];
@@ -64,7 +82,8 @@ void distance(char * filename, int total, char a[4], char b[4], int * names){
     }
     fclose(fp);
     //run dijkstra
-    dijkstra(g, start, end, total);
+    dijkstra(g, start, end, total, indices);
+    free_all(g, total);
     // print_path(g, end);
 }
 
@@ -76,6 +95,7 @@ int main(int argc, char ** argv){
     //map airport name to unique num
     int names[26*26*26] = {-1};
     int total = extract_vertex(argv[1], names);
+    char ** indices = map_index(argv[1], total);
     //read user input and process input
     char input[20];
     char *start, *end, *command;
@@ -99,12 +119,13 @@ int main(int argc, char ** argv){
         }
         //distance
         else if (!strcasecmp(command, "distance")) {
-            distance(argv[2], total, start, end, names);
+            distance(argv[2], total, start, end, names, indices);
         }
         else{
             printf("Invalid input, use \"help\" to see avaliable command\n\n");
         }
         printf("Enter Command > ");
     }
+    free(indices);
     return 0;
 }

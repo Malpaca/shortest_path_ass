@@ -9,6 +9,10 @@ MinHeap * createMinHeap(int capacity){
     }
     h->count=0;
     h->arr = (HNode *) calloc(capacity, sizeof(HNode)); //size in bytes
+    h->index = calloc(capacity, sizeof(int)); //size in bytes
+    for (int i = 0; i < capacity; i++){
+        h->index[i] = -1;
+    }
     //check if allocation succeed
     if (h->arr == NULL){
         printf("Memory Error!");
@@ -18,47 +22,56 @@ MinHeap * createMinHeap(int capacity){
 }
 
 void insert(MinHeap * h, int name, int score){
-    HNode data = {name, score};
-    h->arr[h->count] = data;
-    siftup(h, h->count);
-    h->count++;
+    if (h->index[name] == -1){
+        HNode data = {name, score};
+        h->arr[h->count] = data;
+        h->index[name]=h->count;
+        siftup(h, h->count);
+        h->count++;
+    }else{
+        if ((h->arr[h->index[name]]).score > score){
+            (h->arr[h->index[name]]).score = score;
+            siftup(h, h->index[name]);
+        }
+    }
 }
 
-void siftup(MinHeap * h, int index){
-  HNode temp;
-  int parentindex = (index - 1)/2;
+void siftup(MinHeap * h, int i){
+    HNode temp;
+    int tmp;
+    int pi = (i - 1)/2;
 
-  while((h->arr[index]).score < (h->arr[parentindex]).score){
-    temp = h->arr[parentindex];
-    h->arr[index] = h->arr[index];
-    h->arr[index] = temp;
-    index = parentindex;
-    parentindex = (index - 1)/2;
-  }
+    while((h->arr[i]).score < (h->arr[pi]).score){
+        tmp = h->index[(h->arr[pi]).name];
+        h->index[(h->arr[pi]).name] = h->index[(h->arr[i]).name];
+        h->index[(h->arr[i]).name] = tmp;
+        temp = h->arr[pi];
+        h->arr[pi] = h->arr[i];
+        h->arr[i] = temp;
+        i = pi;
+        pi = (pi - 1)/2;
+    }
 }
 
-void siftdown(MinHeap * h, int index){
-    int left = index*2+1;
-    int right = index*2+2;
-    int min;
+void siftdown(MinHeap * h, int i){
+    int left = i*2+1;
+    int right = i*2+2;
+    int min=i;
+    int tmp;
     HNode temp;
 
-    if(left >= h->count || left <0)
-        left = 0;
-    if(right >= h->count || right <0)
-        right = 0;
-
-    if(left && (h->arr[left]).score < (h->arr[index]).score)
-        min=left;
-    else
-        min =index;
-    if(right  && (h->arr[right]).score < (h->arr[min]).score)
+    if (left < h->count && (h->arr[left]).score < (h->arr[i]).score)
+        min = left;
+    if (right < h->count && (h->arr[right]).score < (h->arr[min]).score)
         min = right;
 
-    if(min != index){
+    if(min != i){
+        tmp = h->index[(h->arr[min]).name];
+        h->index[(h->arr[min]).name] = h->index[(h->arr[i]).name];
+        h->index[(h->arr[i]).name] = tmp;
         temp = h->arr[min];
-        h->arr[min] = h->arr[index];
-        h->arr[index] = temp;
+        h->arr[min] = h->arr[i];
+        h->arr[i] = temp;
         // recursive  call
         siftdown(h, min);
     }
@@ -70,6 +83,7 @@ int popmin(MinHeap * h){
         return -1;
     }
     HNode min = h->arr[0];
+    h->index[min.name] = -1;
     h->arr[0] = h->arr[h->count-1];
     h->count--;
     siftdown(h, 0);
@@ -77,6 +91,7 @@ int popmin(MinHeap * h){
 }
 
 void free_heap(MinHeap *h){
+    free(h->index);
     free(h->arr);
     free(h);
 }
