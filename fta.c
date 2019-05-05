@@ -24,6 +24,13 @@ char** map_index(char * filename, int total){
     return indices;
 }
 
+void free_indices(char ** indices, total){
+    for(int i=0; i < total; i++){
+        free(indices[i]);
+    }
+    free(indices);
+}
+
 int extract_vertex(char * filename, int * arr){
     FILE * fp;
     fp = fopen(filename, "r");
@@ -126,6 +133,5 @@ int main(int argc, char ** argv){
         }
         printf("Enter Command > ");
     }
-    free(indices);
     return 0;
 }
