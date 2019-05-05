@@ -24,7 +24,7 @@ char** map_index(char * filename, int total){
     return indices;
 }
 
-void free_indices(char ** indices, total){
+void free_indices(char ** indices, int total){
     for(int i=0; i < total; i++){
         free(indices[i]);
     }
