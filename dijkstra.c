@@ -52,10 +52,6 @@ void dijkstra (Graph *g, int a, int b, int total) {
     int i, j;
     for (i = 0; i < total; i++) {
         Vertex *v = g->vertices[i];
-        if (!g->vertices){
-            printf("%d\n",i);
-            continue;
-        }
         v->dist = INT_MAX;
         v->visited = 0;
     }

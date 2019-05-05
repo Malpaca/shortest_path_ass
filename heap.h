@@ -14,7 +14,6 @@ typedef struct HNode{
 typedef struct MinHeap{
   HNode *arr;
   int count;
-  int capacity;
 }MinHeap;
 
 MinHeap * createMinHeap(int capacity);

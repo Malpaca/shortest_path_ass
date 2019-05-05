@@ -48,7 +48,7 @@ void distance(char * filename, int total, char a[4], char b[4], int * names){
     //read from file and add edge to the structure
     int dist; char depart[4], arrival[4];
     while(fscanf(fp, "%s %s %d", depart, arrival, &dist) != EOF) {
-        printf("%d: %s:%d, %s:%d, %d\n", total, depart, names[name_map(depart)], arrival, names[name_map(arrival)],dist);
+        // printf("%d: %s:%d, %s:%d, %d\n", total, depart, names[name_map(depart)], arrival, names[name_map(arrival)],dist);
         add_edge(g, names[name_map(depart)], names[name_map(arrival)], dist);
         // printf("%d,%d,%d,%d\n",
         //                     g->vertices[names[name_map(depart)]]->e_len,
@@ -64,7 +64,6 @@ void distance(char * filename, int total, char a[4], char b[4], int * names){
     }
     fclose(fp);
     //run dijkstra
-    printf("dijkstra function");
     dijkstra(g, start, end, total);
     // print_path(g, end);
 }
