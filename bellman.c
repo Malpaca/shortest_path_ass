@@ -31,6 +31,4 @@ void bellman (Graph_b *g, int start, int end, int total) {
                 dist[v] = dist[u] + weight;
         }
     }
-    // printf("Total Distance: %d\n",dist[end]);
-    // free(dist);
 }

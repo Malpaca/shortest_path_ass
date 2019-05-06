@@ -1,12 +1,13 @@
 #include "dijkstra.h"
 #include "ctype.h"
 
+//map each three capital character string to a unique number
 int name_map(char* name){
     int a = (name[0]-'A')*26*26 + (name[1]-'A')*26 + (name[2]-'A');
-    // printf("%d\n",a);
     return a;
 }
 
+//get the reverse map from the unique number back to the 3 character string
 char** map_index(char * filename, int total){
     char ** indices = calloc(total, sizeof(char*));
     FILE * fp;
@@ -32,7 +33,9 @@ void free_indices(char ** indices, int total){
     free(indices);
 }
 
+//read airport and
 int extract_vertex(char * filename, int * arr){
+    //initialize name map to -1, indicating this name doesn't have a num associated with it
     for(int i = 0; i < 26*26*26; i++){
         arr[i] = -1;
     }
@@ -41,8 +44,8 @@ int extract_vertex(char * filename, int * arr){
     if(fp == NULL) printf("Error opening file %s\n",filename);
     char buf[50];
     int count = 0;
+    //extract airport name into name map
     while(fgets(buf, 50, fp) != NULL) {
-        // printf("%s",buf);
         buf[3] = '\0';
         arr[name_map(buf)] = count;
         count++;
@@ -51,6 +54,7 @@ int extract_vertex(char * filename, int * arr){
     return count;
 }
 
+//print all airport
 void airport(char * filename){
     FILE * fp;
     fp = fopen(filename, "r");
@@ -64,6 +68,7 @@ void airport(char * filename){
     fclose(fp);
 }
 
+//compute the distance using dijkstra after checking valid input.
 void distance(char * filename, int total, char a[4], char b[4], int * names, char ** indices){
     //start and end string mapping recorded
     int start = names[name_map(a)];
@@ -91,6 +96,7 @@ void distance(char * filename, int total, char a[4], char b[4], int * names, cha
     free_dijkstra(g, total);
 }
 
+//convert string to upper case
 void strupr(char * string){
 	int i = 0;
 	while (string[i] != '\0'){
@@ -101,6 +107,7 @@ void strupr(char * string){
 	}
 }
 
+//check if input source and dist exist as vertex
 int name_check(char * start, char * end){
     if (strlen(start) != 3 || strlen(end) != 3) return 0;
     for(int i = 0; i < 3; i++){
