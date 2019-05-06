@@ -141,7 +141,7 @@ void compare(char * filename, int total, int * names, char ** indices){
             print_progress(j+i*total, 0, total*total-1);
         }
     }
-
+    fclose(fp);
     // printf("Bellman:%f Dijkstra:%f\n", time_bellman, time_dijkstra);
     free_bellman(g_b);
     free_dijkstra(g, total);
