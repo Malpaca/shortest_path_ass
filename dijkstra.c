@@ -33,7 +33,7 @@ Graph * generate_graph(int total){
   return g;
 }
 
-void free_all(Graph * g, int total){
+void free_dijkstra(Graph * g, int total){
     for (int i = 0; i < total; i++){
         if (g->vertices[i]) {
             for (int j = 0; j < (g->vertices[i])->e_len; j++){
@@ -50,7 +50,7 @@ void free_all(Graph * g, int total){
 void print_path(Graph *g, int last, char ** indices){
     Vertex * v = g->vertices[last];
     while(v->score != 0){
-        // printf("%s:%d,%d\n", indices[v->prev],v->prev,last);
+        printf("%s:%d,%d\n", indices[v->prev],v->prev,last);
         v = g->vertices[v->prev];
         for(int i = 0; i < v->e_len; i++){
             if (v->edges[i]->vertex == last){
@@ -68,15 +68,16 @@ void print_path(Graph *g, int last, char ** indices){
         printf("%s->%s:%d\n", indices[v_next->prev], indices[v->edges[v->e_to_next]->vertex], v->edges[v->e_to_next]->weight);
         v = v_next;
     }
+    printf("Total Distance: %d\n",v->score);
 }
 
-void dijkstra (Graph *g, int start, int end, int total, char ** indices) {
+void dijkstra (Graph *g, int start, int end, int total) {
     int i, j;
     for (i = 0; i < total; i++) {
         Vertex *v = g->vertices[i];
         v->score = INT_MAX;
         v->visited = 0;
-        v->prev = 0;
+        v->prev = -1;
         v->e_to_next = -1;
     }
     Vertex *v_curr = g->vertices[start];
@@ -108,7 +109,6 @@ void dijkstra (Graph *g, int start, int end, int total, char ** indices) {
         }
         // print_heap(h);
     }
-    print_path(g, end, indices);
-    printf("Total Distance: %d\n",g->vertices[end]->score);
+    // printf("Total Distance: %d\n",g->vertices[end]->score);
     free_heap(h);
 }

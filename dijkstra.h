@@ -28,8 +28,8 @@ typedef struct {
 void add_vertex (Graph *g, int i);
 void add_edge (Graph *g, int a, int b, int w);
 Graph * generate_graph(int total);
-void dijkstra (Graph *g, int a, int b, int total, char ** indices);
-void free_all(Graph *g, int total);
+void dijkstra (Graph *g, int a, int b, int total);
+void free_dijkstra(Graph *g, int total);
 void print_path (Graph *g, int end, char ** indices);
 
 #endif
